@@ -227,7 +227,7 @@ void st6201::setup() {
 	//st6201_set_orientation(CONFIG_LV_DISPLAY_ORIENTATION);
     //!use static first need to change  
     this->write_command_(0x36);
-    this->write_data_(0x00);// portrait mode
+    this->write_data_(0x48);// rotate 180
 
   // Clear display - ensures we do not see garbage at power-on
   this->draw_filled_rect_(0, 0, this->get_width_internal(), this->get_height_internal(), 0x0000);
