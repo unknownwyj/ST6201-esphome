@@ -1,14 +1,14 @@
-#include "ST6201.h"
+#include "st6201.h"
 #include "esphome/core/log.h"
 
 namespace esphome {
-namespace ST6201 {
+namespace st6201 {
 
-static const char *const TAG = "ST6201";
+static const char *const TAG = "st6201";
 static const size_t TEMP_BUFFER_SIZE = 128;
 
-void ST6201::setup() {
-  ESP_LOGCONFIG(TAG, "Setting up SPI ST6201...");
+void st6201::setup() {
+  ESP_LOGCONFIG(TAG, "Setting up SPI st6201...");
 #ifdef USE_POWER_SUPPLY
   this->power_.request();
   // the PowerSupply component takes care of post turn-on delay
@@ -234,7 +234,7 @@ void ST6201::setup() {
 
   delay(120);  // NOLINT
 
-  this->write_command_(ST6201_DISPON);  // Display on
+  this->write_command_(st6201_DISPON);  // Display on
   delay(120);                           // NOLINT
 
   backlight_(true);
@@ -243,8 +243,8 @@ void ST6201::setup() {
   memset(this->buffer_, 0x00, this->get_buffer_length_());
 }
 
-void ST6201::dump_config() {
-  LOG_DISPLAY("", "SPI ST6201", this);
+void st6201::dump_config() {
+  LOG_DISPLAY("", "SPI st6201", this);
   ESP_LOGCONFIG(TAG, "  Model: %s", this->model_str_);
   ESP_LOGCONFIG(TAG, "  Height: %u", this->height_);
   ESP_LOGCONFIG(TAG, "  Width: %u", this->width_);
@@ -262,16 +262,16 @@ void ST6201::dump_config() {
 #endif
 }
 
-float ST6201::get_setup_priority() const { return setup_priority::PROCESSOR; }
+float st6201::get_setup_priority() const { return setup_priority::PROCESSOR; }
 
-void ST6201::update() {
+void st6201::update() {
   this->do_update_();
   this->write_display_data();
 }
 
-void ST6201::set_model_str(const char *model_str) { this->model_str_ = model_str; }
+void st6201::set_model_str(const char *model_str) { this->model_str_ = model_str; }
 
-void ST6201::write_display_data() {
+void st6201::write_display_data() {
   uint16_t x1 = this->offset_height_;
   uint16_t x2 = x1 + get_width_internal() - 1;
   uint16_t y1 = this->offset_width_;
@@ -281,17 +281,17 @@ void ST6201::write_display_data() {
 
   // set column(x) address
   this->dc_pin_->digital_write(false);
-  this->write_byte(ST6201_CASET);
+  this->write_byte(st6201_CASET);
   this->dc_pin_->digital_write(true);
   this->write_addr_(x1, x2);
   // set page(y) address
   this->dc_pin_->digital_write(false);
-  this->write_byte(ST6201_RASET);
+  this->write_byte(st6201_RASET);
   this->dc_pin_->digital_write(true);
   this->write_addr_(y1, y2);
   // write display memory
   this->dc_pin_->digital_write(false);
-  this->write_byte(ST6201_RAMWR);
+  this->write_byte(st6201_RAMWR);
   this->dc_pin_->digital_write(true);
 
   if (this->eightbitcolor_) {
@@ -319,7 +319,7 @@ void ST6201::write_display_data() {
   this->disable();
 }
 
-void ST6201::init_reset_() {
+void st6201::init_reset_() {
   if (this->reset_pin_ != nullptr) {
     this->reset_pin_->setup();
     this->reset_pin_->digital_write(true);
@@ -333,14 +333,14 @@ void ST6201::init_reset_() {
   }
 }
 
-void ST6201::backlight_(bool onoff) {
+void st6201::backlight_(bool onoff) {
   if (this->backlight_pin_ != nullptr) {
     this->backlight_pin_->setup();
     this->backlight_pin_->digital_write(onoff);
   }
 }
 
-void ST6201::write_command_(uint8_t value) {
+void st6201::write_command_(uint8_t value) {
   this->enable();
   this->dc_pin_->digital_write(false);
   this->write_byte(value);
@@ -348,14 +348,14 @@ void ST6201::write_command_(uint8_t value) {
   this->disable();
 }
 
-void ST6201::write_data_(uint8_t value) {
+void st6201::write_data_(uint8_t value) {
   this->dc_pin_->digital_write(true);
   this->enable();
   this->write_byte(value);
   this->disable();
 }
 
-void ST6201::write_addr_(uint16_t addr1, uint16_t addr2) {
+void st6201::write_addr_(uint16_t addr1, uint16_t addr2) {
   static uint8_t byte[4];
   byte[0] = (addr1 >> 8) & 0xFF;
   byte[1] = addr1 & 0xFF;
@@ -366,7 +366,7 @@ void ST6201::write_addr_(uint16_t addr1, uint16_t addr2) {
   this->write_array(byte, 4);
 }
 
-void ST6201::write_color_(uint16_t color, uint16_t size) {
+void st6201::write_color_(uint16_t color, uint16_t size) {
   static uint8_t byte[1024];
   int index = 0;
   for (int i = 0; i < size; i++) {
@@ -378,7 +378,7 @@ void ST6201::write_color_(uint16_t color, uint16_t size) {
   return write_array(byte, size * 2);
 }
 
-size_t ST6201::get_buffer_length_() {
+size_t st6201::get_buffer_length_() {
   if (this->eightbitcolor_) {
     return size_t(this->get_width_internal()) * size_t(this->get_height_internal());
   }
@@ -391,19 +391,19 @@ size_t ST6201::get_buffer_length_() {
 // x2: End X coordinate
 // y2: End Y coordinate
 // color: color
-void ST6201::draw_filled_rect_(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color) {
+void st6201::draw_filled_rect_(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color) {
   this->enable();
   this->dc_pin_->digital_write(false);
-  this->write_byte(ST6201_CASET);  // set column(x) address
+  this->write_byte(st6201_CASET);  // set column(x) address
   this->dc_pin_->digital_write(true);
   this->write_addr_(x1, x2);
 
   this->dc_pin_->digital_write(false);
-  this->write_byte(ST6201_RASET);  // set Page(y) address
+  this->write_byte(st6201_RASET);  // set Page(y) address
   this->dc_pin_->digital_write(true);
   this->write_addr_(y1, y2);
   this->dc_pin_->digital_write(false);
-  this->write_byte(ST6201_RAMWR);  // begin a write to memory
+  this->write_byte(st6201_RAMWR);  // begin a write to memory
   this->dc_pin_->digital_write(true);
   for (int i = x1; i <= x2; i++) {
     uint16_t size = y2 - y1 + 1;
@@ -412,7 +412,7 @@ void ST6201::draw_filled_rect_(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y
   this->disable();
 }
 
-void HOT ST6201::draw_absolute_pixel_internal(int x, int y, Color color) {
+void HOT st6201::draw_absolute_pixel_internal(int x, int y, Color color) {
   if (x >= this->get_width_internal() || x < 0 || y >= this->get_height_internal() || y < 0)
     return;
 
@@ -428,5 +428,5 @@ void HOT ST6201::draw_absolute_pixel_internal(int x, int y, Color color) {
   }
 }
 
-}  // namespace ST6201
+}  // namespace st6201
 }  // namespace esphome

@@ -8,106 +8,106 @@
 #endif
 
 namespace esphome {
-namespace ST6201 {
+namespace st6201 {
 
-static const uint8_t ST6201_NOP = 0x00;        // No Operation
-static const uint8_t ST6201_SWRESET = 0x01;    // Software Reset
-static const uint8_t ST6201_RDDID = 0x04;      // Read Display ID
-static const uint8_t ST6201_RDDST = 0x09;      // Read Display Status
-static const uint8_t ST6201_RDDPM = 0x0A;      // Read Display Power Mode
-static const uint8_t ST6201_RDDMADCTL = 0x0B;  // Read Display MADCTL
-static const uint8_t ST6201_RDDCOLMOD = 0x0C;  // Read Display Pixel Format
-static const uint8_t ST6201_RDDIM = 0x0D;      // Read Display Image Mode
-static const uint8_t ST6201_RDDSM = 0x0E;      // Read Display Signal Mod
-static const uint8_t ST6201_RDDSDR = 0x0F;     // Read Display Self-Diagnostic Result
-static const uint8_t ST6201_SLPIN = 0x10;      // Sleep in
-static const uint8_t ST6201_SLPOUT = 0x11;     // Sleep Out
-static const uint8_t ST6201_PTLON = 0x12;      // Partial Display Mode On
-static const uint8_t ST6201_NORON = 0x13;      // Normal Display Mode On
-static const uint8_t ST6201_INVOFF = 0x20;     // Display Inversion Off
-static const uint8_t ST6201_INVON = 0x21;      // Display Inversion On
-static const uint8_t ST6201_GAMSET = 0x26;     // Gamma Set
-static const uint8_t ST6201_DISPOFF = 0x28;    // Display Off
-static const uint8_t ST6201_DISPON = 0x29;     // Display On
-static const uint8_t ST6201_CASET = 0x2A;      // Column Address Set
-static const uint8_t ST6201_RASET = 0x2B;      // Row Address Set
-static const uint8_t ST6201_RAMWR = 0x2C;      // Memory Write
-static const uint8_t ST6201_RAMRD = 0x2E;      // Memory Read
-static const uint8_t ST6201_PTLAR = 0x30;      // Partial Area
-static const uint8_t ST6201_VSCRDEF = 0x33;    // Vertical Scrolling Definition
-static const uint8_t ST6201_TEOFF = 0x34;      // Tearing Effect Line Off
-static const uint8_t ST6201_TEON = 0x35;       // Tearing Effect Line On
-static const uint8_t ST6201_MADCTL = 0x36;     // Memory Data Access Control
-static const uint8_t ST6201_VSCSAD = 0x37;     // Vertical Scroll Start Address of RAM
-static const uint8_t ST6201_IDMOFF = 0x38;     // Idle Mode Off
-static const uint8_t ST6201_IDMON = 0x39;      // Idle Mode On
-static const uint8_t ST6201_COLMOD = 0x3A;     // Interface Pixel Format
-static const uint8_t ST6201_WRMEMC = 0x3C;     // Write Memory Continue
-static const uint8_t ST6201_RDMEMC = 0x3E;     // Read Memory Continue
-static const uint8_t ST6201_STE = 0x44;        // Set Tear Scanline
-static const uint8_t ST6201_GSCAN = 0x45;      // Get Scanline
-static const uint8_t ST6201_WRDISBV = 0x51;    // Write Display Brightness
-static const uint8_t ST6201_RDDISBV = 0x52;    // Read Display Brightness Value
-static const uint8_t ST6201_WRCTRLD = 0x53;    // Write CTRL Display
-static const uint8_t ST6201_RDCTRLD = 0x54;    // Read CTRL Value Display
-static const uint8_t ST6201_WRCACE = 0x55;     // Write Content Adaptive Brightness Control and Color Enhancement
-static const uint8_t ST6201_RDCABC = 0x56;     // Read Content Adaptive Brightness Control
-static const uint8_t ST6201_WRCABCMB = 0x5E;   // Write CABC Minimum Brightnes
-static const uint8_t ST6201_RDCABCMB = 0x5F;   // Read CABC Minimum Brightnes
-static const uint8_t ST6201_RDABCSDR = 0x68;   // Read Automatic Brightness Control Self-Diagnostic Result
-static const uint8_t ST6201_RDID1 = 0xDA;      // Read ID1
-static const uint8_t ST6201_RDID2 = 0xDB;      // Read ID2
-static const uint8_t ST6201_RDID3 = 0xDC;      // Read ID3
-static const uint8_t ST6201_RAMCTRL = 0xB0;    // RAM Control
-static const uint8_t ST6201_RGBCTRL = 0xB1;    // RGB Interface Control
-static const uint8_t ST6201_PORCTRL = 0xB2;    // Porch Setting
-static const uint8_t ST6201_FRCTRL1 = 0xB3;    // Frame Rate Control 1 (In partial mode/ idle colors)
-static const uint8_t ST6201_PARCTRL = 0xB5;    // Partial mode Control
-static const uint8_t ST6201_GCTRL = 0xB7;      // Gate Control
-static const uint8_t ST6201_GTADJ = 0xB8;      // Gate On Timing Adjustment
-static const uint8_t ST6201_DGMEN = 0xBA;      // Digital Gamma Enable
-static const uint8_t ST6201_VCOMS = 0xBB;      // VCOMS Setting
-static const uint8_t ST6201_LCMCTRL = 0xC0;    // LCM Control
-static const uint8_t ST6201_IDSET = 0xC1;      // ID Code Setting
-static const uint8_t ST6201_VDVVRHEN = 0xC2;   // VDV and VRH Command Enable
-static const uint8_t ST6201_VRHS = 0xC3;       // VRH Set
-static const uint8_t ST6201_VDVS = 0xC4;       // VDV Set
-static const uint8_t ST6201_VCMOFSET = 0xC5;   // VCOMS Offset Set
-static const uint8_t ST6201_FRCTRL2 = 0xC6;    // Frame Rate Control in Normal Mode
-static const uint8_t ST6201_CABCCTRL = 0xC7;   // CABC Control
-static const uint8_t ST6201_REGSEL1 = 0xC8;    // Register Value Selection 1
-static const uint8_t ST6201_REGSEL2 = 0xCA;    // Register Value Selection
-static const uint8_t ST6201_PWMFRSEL = 0xCC;   // PWM Frequency Selection
-static const uint8_t ST6201_PWCTRL1 = 0xD0;    // Power Control 1
-static const uint8_t ST6201_VAPVANEN = 0xD2;   // Enable VAP/VAN signal output
-static const uint8_t ST6201_CMD2EN = 0xDF;     // Command 2 Enable
-static const uint8_t ST6201_PVGAMCTRL = 0xE0;  // Positive Voltage Gamma Control
-static const uint8_t ST6201_NVGAMCTRL = 0xE1;  // Negative Voltage Gamma Control
-static const uint8_t ST6201_DGMLUTR = 0xE2;    // Digital Gamma Look-up Table for Red
-static const uint8_t ST6201_DGMLUTB = 0xE3;    // Digital Gamma Look-up Table for Blue
-static const uint8_t ST6201_GATECTRL = 0xE4;   // Gate Control
-static const uint8_t ST6201_SPI2EN = 0xE7;     // SPI2 Enable
-static const uint8_t ST6201_PWCTRL2 = 0xE8;    // Power Control 2
-static const uint8_t ST6201_EQCTRL = 0xE9;     // Equalize time control
-static const uint8_t ST6201_PROMCTRL = 0xEC;   // Program Mode Control
-static const uint8_t ST6201_PROMEN = 0xFA;     // Program Mode Enable
-static const uint8_t ST6201_NVMSET = 0xFC;     // NVM Setting
-static const uint8_t ST6201_PROMACT = 0xFE;    // Program action
+static const uint8_t st6201_NOP = 0x00;        // No Operation
+static const uint8_t st6201_SWRESET = 0x01;    // Software Reset
+static const uint8_t st6201_RDDID = 0x04;      // Read Display ID
+static const uint8_t st6201_RDDST = 0x09;      // Read Display Status
+static const uint8_t st6201_RDDPM = 0x0A;      // Read Display Power Mode
+static const uint8_t st6201_RDDMADCTL = 0x0B;  // Read Display MADCTL
+static const uint8_t st6201_RDDCOLMOD = 0x0C;  // Read Display Pixel Format
+static const uint8_t st6201_RDDIM = 0x0D;      // Read Display Image Mode
+static const uint8_t st6201_RDDSM = 0x0E;      // Read Display Signal Mod
+static const uint8_t st6201_RDDSDR = 0x0F;     // Read Display Self-Diagnostic Result
+static const uint8_t st6201_SLPIN = 0x10;      // Sleep in
+static const uint8_t st6201_SLPOUT = 0x11;     // Sleep Out
+static const uint8_t st6201_PTLON = 0x12;      // Partial Display Mode On
+static const uint8_t st6201_NORON = 0x13;      // Normal Display Mode On
+static const uint8_t st6201_INVOFF = 0x20;     // Display Inversion Off
+static const uint8_t st6201_INVON = 0x21;      // Display Inversion On
+static const uint8_t st6201_GAMSET = 0x26;     // Gamma Set
+static const uint8_t st6201_DISPOFF = 0x28;    // Display Off
+static const uint8_t st6201_DISPON = 0x29;     // Display On
+static const uint8_t st6201_CASET = 0x2A;      // Column Address Set
+static const uint8_t st6201_RASET = 0x2B;      // Row Address Set
+static const uint8_t st6201_RAMWR = 0x2C;      // Memory Write
+static const uint8_t st6201_RAMRD = 0x2E;      // Memory Read
+static const uint8_t st6201_PTLAR = 0x30;      // Partial Area
+static const uint8_t st6201_VSCRDEF = 0x33;    // Vertical Scrolling Definition
+static const uint8_t st6201_TEOFF = 0x34;      // Tearing Effect Line Off
+static const uint8_t st6201_TEON = 0x35;       // Tearing Effect Line On
+static const uint8_t st6201_MADCTL = 0x36;     // Memory Data Access Control
+static const uint8_t st6201_VSCSAD = 0x37;     // Vertical Scroll Start Address of RAM
+static const uint8_t st6201_IDMOFF = 0x38;     // Idle Mode Off
+static const uint8_t st6201_IDMON = 0x39;      // Idle Mode On
+static const uint8_t st6201_COLMOD = 0x3A;     // Interface Pixel Format
+static const uint8_t st6201_WRMEMC = 0x3C;     // Write Memory Continue
+static const uint8_t st6201_RDMEMC = 0x3E;     // Read Memory Continue
+static const uint8_t st6201_STE = 0x44;        // Set Tear Scanline
+static const uint8_t st6201_GSCAN = 0x45;      // Get Scanline
+static const uint8_t st6201_WRDISBV = 0x51;    // Write Display Brightness
+static const uint8_t st6201_RDDISBV = 0x52;    // Read Display Brightness Value
+static const uint8_t st6201_WRCTRLD = 0x53;    // Write CTRL Display
+static const uint8_t st6201_RDCTRLD = 0x54;    // Read CTRL Value Display
+static const uint8_t st6201_WRCACE = 0x55;     // Write Content Adaptive Brightness Control and Color Enhancement
+static const uint8_t st6201_RDCABC = 0x56;     // Read Content Adaptive Brightness Control
+static const uint8_t st6201_WRCABCMB = 0x5E;   // Write CABC Minimum Brightnes
+static const uint8_t st6201_RDCABCMB = 0x5F;   // Read CABC Minimum Brightnes
+static const uint8_t st6201_RDABCSDR = 0x68;   // Read Automatic Brightness Control Self-Diagnostic Result
+static const uint8_t st6201_RDID1 = 0xDA;      // Read ID1
+static const uint8_t st6201_RDID2 = 0xDB;      // Read ID2
+static const uint8_t st6201_RDID3 = 0xDC;      // Read ID3
+static const uint8_t st6201_RAMCTRL = 0xB0;    // RAM Control
+static const uint8_t st6201_RGBCTRL = 0xB1;    // RGB Interface Control
+static const uint8_t st6201_PORCTRL = 0xB2;    // Porch Setting
+static const uint8_t st6201_FRCTRL1 = 0xB3;    // Frame Rate Control 1 (In partial mode/ idle colors)
+static const uint8_t st6201_PARCTRL = 0xB5;    // Partial mode Control
+static const uint8_t st6201_GCTRL = 0xB7;      // Gate Control
+static const uint8_t st6201_GTADJ = 0xB8;      // Gate On Timing Adjustment
+static const uint8_t st6201_DGMEN = 0xBA;      // Digital Gamma Enable
+static const uint8_t st6201_VCOMS = 0xBB;      // VCOMS Setting
+static const uint8_t st6201_LCMCTRL = 0xC0;    // LCM Control
+static const uint8_t st6201_IDSET = 0xC1;      // ID Code Setting
+static const uint8_t st6201_VDVVRHEN = 0xC2;   // VDV and VRH Command Enable
+static const uint8_t st6201_VRHS = 0xC3;       // VRH Set
+static const uint8_t st6201_VDVS = 0xC4;       // VDV Set
+static const uint8_t st6201_VCMOFSET = 0xC5;   // VCOMS Offset Set
+static const uint8_t st6201_FRCTRL2 = 0xC6;    // Frame Rate Control in Normal Mode
+static const uint8_t st6201_CABCCTRL = 0xC7;   // CABC Control
+static const uint8_t st6201_REGSEL1 = 0xC8;    // Register Value Selection 1
+static const uint8_t st6201_REGSEL2 = 0xCA;    // Register Value Selection
+static const uint8_t st6201_PWMFRSEL = 0xCC;   // PWM Frequency Selection
+static const uint8_t st6201_PWCTRL1 = 0xD0;    // Power Control 1
+static const uint8_t st6201_VAPVANEN = 0xD2;   // Enable VAP/VAN signal output
+static const uint8_t st6201_CMD2EN = 0xDF;     // Command 2 Enable
+static const uint8_t st6201_PVGAMCTRL = 0xE0;  // Positive Voltage Gamma Control
+static const uint8_t st6201_NVGAMCTRL = 0xE1;  // Negative Voltage Gamma Control
+static const uint8_t st6201_DGMLUTR = 0xE2;    // Digital Gamma Look-up Table for Red
+static const uint8_t st6201_DGMLUTB = 0xE3;    // Digital Gamma Look-up Table for Blue
+static const uint8_t st6201_GATECTRL = 0xE4;   // Gate Control
+static const uint8_t st6201_SPI2EN = 0xE7;     // SPI2 Enable
+static const uint8_t st6201_PWCTRL2 = 0xE8;    // Power Control 2
+static const uint8_t st6201_EQCTRL = 0xE9;     // Equalize time control
+static const uint8_t st6201_PROMCTRL = 0xEC;   // Program Mode Control
+static const uint8_t st6201_PROMEN = 0xFA;     // Program Mode Enable
+static const uint8_t st6201_NVMSET = 0xFC;     // NVM Setting
+static const uint8_t st6201_PROMACT = 0xFE;    // Program action
 
-// Flags for ST6201_MADCTL
-static const uint8_t ST6201_MADCTL_MY = 0x80;
-static const uint8_t ST6201_MADCTL_MX = 0x40;
-static const uint8_t ST6201_MADCTL_MV = 0x20;
-static const uint8_t ST6201_MADCTL_ML = 0x10;
-static const uint8_t ST6201_MADCTL_RGB = 0x00;
-static const uint8_t ST6201_MADCTL_BGR = 0x08;
-static const uint8_t ST6201_MADCTL_MH = 0x04;
-static const uint8_t ST6201_MADCTL_SS = 0x02;
-static const uint8_t ST6201_MADCTL_GS = 0x01;
+// Flags for st6201_MADCTL
+static const uint8_t st6201_MADCTL_MY = 0x80;
+static const uint8_t st6201_MADCTL_MX = 0x40;
+static const uint8_t st6201_MADCTL_MV = 0x20;
+static const uint8_t st6201_MADCTL_ML = 0x10;
+static const uint8_t st6201_MADCTL_RGB = 0x00;
+static const uint8_t st6201_MADCTL_BGR = 0x08;
+static const uint8_t st6201_MADCTL_MH = 0x04;
+static const uint8_t st6201_MADCTL_SS = 0x02;
+static const uint8_t st6201_MADCTL_GS = 0x01;
 
-static const uint8_t ST6201_MADCTL_COLOR_ORDER = ST6201_MADCTL_BGR;
+static const uint8_t st6201_MADCTL_COLOR_ORDER = st6201_MADCTL_BGR;
 
-class ST6201V : public display::DisplayBuffer,
+class st6201 : public display::DisplayBuffer,
                 public spi::SPIDevice<spi::BIT_ORDER_MSB_FIRST, spi::CLOCK_POLARITY_LOW, spi::CLOCK_PHASE_LEADING,
                                       spi::DATA_RATE_20MHZ> {
  public:
@@ -168,5 +168,5 @@ class ST6201V : public display::DisplayBuffer,
   const char *model_str_;
 };
 
-}  // namespace ST6201
+}  // namespace st6201
 }  // namespace esphome
