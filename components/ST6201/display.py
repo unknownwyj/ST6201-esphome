@@ -17,7 +17,7 @@ from esphome.const import (
     CONF_OFFSET_HEIGHT,
     CONF_OFFSET_WIDTH,
 )
-from . import ST6201_ns
+from . import st6201_ns
 
 CONF_EIGHTBITCOLOR = "eightbitcolor"
 
@@ -25,8 +25,8 @@ CODEOWNERS = ["@kbx81"]
 
 DEPENDENCIES = ["spi"]
 
-ST6201 = ST6201_ns.class_(
-    "ST6201", cg.PollingComponent, spi.SPIDevice, display.DisplayBuffer
+st6201 = st6201_ns.class_(
+    "st6201", cg.PollingComponent, spi.SPIDevice, display.DisplayBuffer
 )
 
 MODEL_PRESETS = "model_presets"
@@ -56,7 +56,7 @@ MODELS = {
 }
 
 
-def validate_ST6201(config):
+def validate_st6201(config):
     model_data = MODELS[config[CONF_MODEL]]
     presets = model_data[MODEL_PRESETS]
     for key, value in presets.items():
@@ -89,7 +89,7 @@ def validate_ST6201(config):
 CONFIG_SCHEMA = cv.All(
     display.FULL_DISPLAY_SCHEMA.extend(
         {
-            cv.GenerateID(): cv.declare_id(ST6201),
+            cv.GenerateID(): cv.declare_id(st6201),
             cv.Required(CONF_MODEL): cv.one_of(*MODELS.keys(), upper=True, space="_"),
             cv.Optional(CONF_RESET_PIN): pins.gpio_output_pin_schema,
             cv.Optional(CONF_DC_PIN): pins.gpio_output_pin_schema,
@@ -107,7 +107,7 @@ CONFIG_SCHEMA = cv.All(
     )
     .extend(cv.polling_component_schema("5s"))
     .extend(spi.spi_device_schema(cs_pin_required=False)),
-    validate_ST6201,
+    validate_st6201,
 )
 
 
