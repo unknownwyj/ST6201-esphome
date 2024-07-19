@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "*.svelte": "svelte",
+        "ili9xxx_init": "c"
+    }
+}
